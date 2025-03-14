@@ -18,7 +18,12 @@ d3.csv('data/leaderlist.csv').then(data => {
 
   // init lexisChart
   // Initialize and update chart
-  const vis = new LexisChart({ parentElement: "#vis" }, data);
+  console.log(data)
+ 
+  const vis = new LexisChart({ parentElement: "#lexisChart" }, data);
+
+  console.log("heeyyy", vis.data)
+
   vis.updateVis();
 
 });

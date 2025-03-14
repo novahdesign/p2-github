@@ -16,6 +16,11 @@ d3.csv('data/leaderlist.csv').then(data => {
 
   data.sort((a,b) => a.label - b.label);
 
+  // init lexisChart
+  // Initialize and update chart
+  const vis = new LexisChart({ parentElement: "#vis" }, data);
+  vis.updateVis();
+
 });
 
 /*

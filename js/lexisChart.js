@@ -19,6 +19,9 @@ class LexisChart {
       // Todo: Add or remove attributes from config as needed
     }
     this.data = _data;
+
+    this.selectedArrows = new Set(); 
+
     this.initVis();
   }
 
@@ -54,6 +57,8 @@ class LexisChart {
 
     // Helper function to create the arrows and styles for our various arrow heads
     vis.createMarkerEnds();
+
+    
 
     // Todo: initialize scales, axes, static elements, etc.
 
@@ -104,6 +109,17 @@ vis.chartArea.append("text")
       .attr("class", "tooltip")
       .style("opacity", 0);
 
+      vis.chart.append("defs")
+    .append("clipPath")
+    .attr("id", "chart-mask")
+    .append("rect")
+    .attr("width", vis.width)  // Clipping width
+    .attr("height", vis.height); // Clipping height
+
+// Apply the mask to the group containing arrows
+vis.chartArea = vis.chart.append("g")
+    .attr("clip-path", "url(#chart-mask)");
+
 
       // call update
 
@@ -125,72 +141,71 @@ vis.chartArea.append("text")
 
   }
 
-
   renderVis() {
     let vis = this;
-    // Todo: Bind data to visual elements (enter-update-exit or join)
-    
 
-
-    // **JOIN pattern to bind data to line elements (arrows)**
-    vis.chartArea.selectAll(".arrow")
-    .data(vis.filteredData, d => d.leader) // Unique key for efficient updates
-
-    .join("line")
-    .attr("class", "arrow")
-    .attr("x1", d => vis.xScale(d.start_year))
-    .attr("x2", d => vis.xScale(d.end_year))
-    .attr("y1", d => vis.yScale(d.start_age))
-    .attr("y2", d => vis.yScale(d.end_age))
-    .attr("stroke", d => d.label === 1 ? "blue" : "#888")
-    .attr("stroke-width", d => d.label === 1 ? 3 : 2)
-    .attr("marker-end", "url(#arrow-head)")
-    .style("cursor", "pointer")
-    .on("mouseover", function (event, d) {
-        d3.select(this).attr("stroke", "black").attr("stroke-width", 4);
-        vis.tooltip
-            .html(`
-                <strong>${d.leader}</strong><br>
-                Country: ${d.country} <br>
-                Years: ${d.start_year} - ${d.end_year} <br>
-                Age: ${d.start_age} - ${d.end_age} <br>
-                Duration: ${d.duration} years <br>
-                GDP per capita: ${d.pcgdp ? "$" + d.pcgdp : "N/A"}
-            `)
-            .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
-            .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
-            .style("opacity", 1);
-    })
-    .on("mouseout", function () {
-        d3.select(this)
-            .attr("stroke", d => d.label === 1 ? "blue" : "#888")
-            .attr("stroke-width", d => d.label === 1 ? 3 : 2);
-        vis.tooltip.style("opacity", 0);
-    })
-    .on("click", function (event, d) {
-        if (vis.selectedArrows.has(d.leader)) {
-            vis.selectedArrows.delete(d.leader);
-        } else {
-            vis.selectedArrows.add(d.leader);
-        }
-        vis.updateArrowStyles();
-    });
-
-
-    // **Remove axis lines every time renderVis is called**
     vis.xAxisGroup.call(vis.xAxis).selectAll(".domain").remove(); // Removes x-axis line
     vis.yAxisGroup.call(vis.yAxis).selectAll(".domain").remove(); // Removes y-axis line
-  }
 
-  // helper for updating arrows
 
-  updateArrowStyles() {
-    let vis = this;
+    vis.chartArea.selectAll(".arrow")
+        .data(vis.filteredData, d => d.leader)
 
-    vis.chart.selectAll(".arrow")
-        .attr("stroke", d => vis.selectedArrows.has(d.leader) ? "red" : (d.label === 1 ? "blue" : "#888"))
-        .attr("stroke-width", d => vis.selectedArrows.has(d.leader) ? 4 : (d.label === 1 ? 3 : 2));
+        .join("line")
+        .attr("class", "arrow")
+        .attr("x1", d => vis.xScale(d.start_year))
+        .attr("x2", d => vis.xScale(d.end_year))
+        .attr("y1", d => vis.yScale(d.start_age))
+        .attr("y2", d => vis.yScale(d.end_age))
+        .attr("stroke", d => d.label === 1 ? "#aeaeca" : "#ddd")
+        .attr("stroke-width", d => d.label === 1 ? 3 : 2)
+        .attr("marker-end", d => {
+            if (vis.selectedArrows.has(d.leader)) return "url(#arrow-head-highlighted-selected)";
+            if (d.label === 1) return "url(#arrow-head-highlighted)";
+            return "url(#arrow-head)";
+        })
+        .style("cursor", "pointer")
+        .on("mouseover", function (event, d) {
+            d3.select(this)
+                .attr("stroke", "#888")
+                .attr("stroke-width", 4)
+                .attr("marker-end", "url(#arrow-head-hovered)");
+
+            vis.tooltip
+                .html(`
+                    <strong>${d.leader}</strong><br>
+                    Country: ${d.country} <br>
+                    Years: ${d.start_year} - ${d.end_year} <br>
+                    Age: ${d.start_age} - ${d.end_age} <br>
+                    Duration: ${d.duration} years <br>
+                    GDP per capita: ${d.pcgdp ? "$" + d.pcgdp : "N/A"}
+                `)
+                .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
+                .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
+                .style("opacity", 1);
+        })
+        .on("mouseout", function () {
+            d3.select(this)
+                .attr("stroke", d => vis.selectedArrows.has(d.leader) ? "#e89f03" : (d.label === 1 ? "#aeaeca" : "#ddd"))
+                .attr("stroke-width", d => vis.selectedArrows.has(d.leader) ? 4 : (d.label === 1 ? 3 : 2))
+                .attr("marker-end", d => {
+                    if (vis.selectedArrows.has(d.leader)) return "url(#arrow-head-highlighted-selected)";
+                    if (d.label === 1) return "url(#arrow-head-highlighted)";
+                    return "url(#arrow-head)";
+                });
+
+            vis.tooltip.style("opacity", 0);
+        })
+        .on("click", function (event, d) {
+            if (vis.selectedArrows.has(d.leader)) {
+                vis.selectedArrows.delete(d.leader);
+            } else {
+                vis.selectedArrows.add(d.leader);
+            }
+            vis.renderVis(); // Re-render to update styles
+        });      
 }
+
 
   /**
    * Create all of the different arrow heads.

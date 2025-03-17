@@ -17,12 +17,11 @@ d3.csv('data/leaderlist.csv').then(data => {
   data.sort((a,b) => a.label - b.label);
 
   // init lexisChart
-  // Initialize and update chart
-  console.log(data)
- 
   const vis = new LexisChart({ parentElement: "#lexis-chart" }, data);
 
-  console.log("heeyyy", vis.data)
+  // init Bar Chart
+  
+
 
   vis.updateVis();
 

@@ -35,7 +35,7 @@ d3.csv('data/leaderlist.csv').then(_data => {
  // Add event listener for the dropdown filter
  d3.select("#country-selector").on("change", function () {
      selectedGroup = this.value;
-     resetSelections(); // Clear selected gender, arrows, and points
+    //  resetSelections(); // Clear selected gender, arrows, and points
      filterData(); // Apply filter
  });
 
@@ -45,14 +45,9 @@ d3.csv('data/leaderlist.csv').then(_data => {
 
 // Function to filter data based on selected group
 function filterData() {
-//  if (!data) return; // Prevents filtering if data isn't loaded
-
  let filteredData;
-
- console.log('reached filter hiii not yet filtered' + data)
-
  // Apply the country group filter + ensure duration > 0
-  filteredData = data.filter(d => d[selectedGroup] === 1 && d.duration > 0);
+filteredData = data.filter(d => d[selectedGroup] === 1 && d.duration > 0);
  console.log(`Filtering by: ${selectedGroup}`, filteredData);
 
  // Update datasets in each visualization and re-render
@@ -66,18 +61,18 @@ function filterData() {
  scatterPlot.updateVis();
 }
 
-// Function to reset selections when dropdown changes
-function resetSelections() {
- // Clear selected gender, arrows, and points
- lexisChart.selectedArrows.clear();
- scatterPlot.selectedPoints = new Set();
- barChart.selectedGender = null;
+// // Function to reset selections when dropdown changes
+// function resetSelections() {
+//  // Clear selected gender, arrows, and points
+//  lexisChart.selectedArrows.clear();
+//  scatterPlot.selectedPoints = new Set();
+//  barChart.selectedGender = null;
 
- // Ensure visualizations update to reflect deselections
- lexisChart.updateVis();
- scatterPlot.updateVis();
- barChart.updateVis();
-}
+//  // Ensure visualizations update to reflect deselections
+//  lexisChart.updateVis();
+//  scatterPlot.updateVis();
+//  barChart.updateVis();
+// }
 
 /*
  * Todo:

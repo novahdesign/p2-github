@@ -108,6 +108,60 @@ class LexisChart {
     vis.renderVis();
   }
 
+  // renderVis() {
+  //   let vis = this;
+
+  //   // Update axes
+  //   vis.xAxisGroup.call(vis.xAxis).selectAll(".domain").remove();
+  //   vis.yAxisGroup.call(vis.yAxis).selectAll(".domain").remove();
+
+  //   // Bind data to arrows
+  //   vis.chartArea.selectAll(".arrow")
+  //     .data(vis.filteredData, d => d.leader)
+  //     .join(
+  //       enter => enter.append("line")
+  //         .attr("class", "arrow")
+  //         .attr("x1", d => vis.xScale(d.start_year))
+  //         .attr("x2", d => vis.xScale(d.end_year))
+  //         .attr("y1", d => vis.yScale(d.start_age))
+  //         .attr("y2", d => vis.yScale(d.end_age))
+  //         .attr("stroke", d => selectedPoints.has(d.leader) ? "#e89f03" : (d.label === 1 ? "#aeaeca" : "#ddd")) // Change full arrow color
+  //         .attr("stroke-width", d => selectedPoints.has(d.leader) ? 4 : (d.label === 1 ? 3 : 2)) // Thicker for selected
+  //         .attr("marker-end", d => vis.getArrowMarker(d))
+  //         .style("cursor", "pointer")
+  //         .on("mouseover", function (event, d) {
+  //           d3.select(this).attr("stroke", "#888").attr("stroke-width", 4).attr("marker-end", "url(#arrow-head-hovered)");
+
+  //           vis.tooltip.html(`
+  //             <strong>${d.leader}</strong><br>
+  //             Country: ${d.country} <br>
+  //             Years: ${d.start_year} - ${d.end_year} <br>
+  //             Age: ${d.start_age} - ${d.end_age} <br>
+  //             Duration: ${d.duration} years <br>
+  //             GDP per capita: ${d.pcgdp ? "$" + d.pcgdp : "N/A"}
+  //           `)
+  //             .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
+  //             .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
+  //             .style("opacity", 1);
+  //         })
+  //         .on("mouseout", function () {
+  //           d3.select(this)
+  //             .attr("stroke", d => vis.selectedPoints.has(d.leader) ? "#e89f03" : (d.label === 1 ? "#aeaeca" : "#ddd"))
+  //             .attr("stroke-width", d => vis.selectedPoints.has(d.leader) ? 4 : (d.label === 1 ? 3 : 2))
+  //             .attr("marker-end", d => vis.getArrowMarker(d));
+
+  //           vis.tooltip.style("opacity", 0);
+  //         })
+  //         .on("click", function (event, d) {
+  //           // event.stopPropagation(); // Prevent background click from firing
+  //           toggleSelection(d.leader);
+  //           // vis.renderVis(); // Re-render to update styles
+  //         })
+  //     );
+
+      
+  // }
+
   renderVis() {
     let vis = this;
 
@@ -117,50 +171,93 @@ class LexisChart {
 
     // Bind data to arrows
     vis.chartArea.selectAll(".arrow")
-      .data(vis.filteredData, d => d.leader)
-      .join(
-        enter => enter.append("line")
-          .attr("class", "arrow")
-          .attr("x1", d => vis.xScale(d.start_year))
-          .attr("x2", d => vis.xScale(d.end_year))
-          .attr("y1", d => vis.yScale(d.start_age))
-          .attr("y2", d => vis.yScale(d.end_age))
-          .attr("stroke", d => selectedPoints.has(d.leader) ? "#e89f03" : (d.label === 1 ? "#aeaeca" : "#ddd")) // Change full arrow color
-          .attr("stroke-width", d => selectedPoints.has(d.leader) ? 4 : (d.label === 1 ? 3 : 2)) // Thicker for selected
-          // .attr("stroke", d => d.label === 1 ? "#aeaeca" : "#ddd")
-          // .attr("stroke-width", d => d.label === 1 ? 3 : 2)
-          .attr("marker-end", d => vis.getArrowMarker(d))
-          .style("cursor", "pointer")
-          .on("mouseover", function (event, d) {
-            d3.select(this).attr("stroke", "#888").attr("stroke-width", 4).attr("marker-end", "url(#arrow-head-hovered)");
+        .data(vis.filteredData, d => d.leader)
+        .join(
+            enter => enter.append("line")
+                .attr("class", "arrow")
+                .attr("x1", d => vis.xScale(d.start_year))
+                .attr("x2", d => vis.xScale(d.end_year))
+                .attr("y1", d => vis.yScale(d.start_age))
+                .attr("y2", d => vis.yScale(d.end_age))
+                .attr("stroke", d => vis.getArrowColor(d))
+                .attr("stroke-width", d => vis.getArrowWidth(d))
+                .attr("marker-end", d => vis.getArrowMarker(d))
+                .style("cursor", "pointer")
+                .on("mouseover", function (event, d) {
+                    d3.select(this)
+                        .attr("stroke", "#888")
+                        .attr("stroke-width", 4)
+                        .attr("marker-end", "url(#arrow-head-hovered)");
 
-            vis.tooltip.html(`
-              <strong>${d.leader}</strong><br>
-              Country: ${d.country} <br>
-              Years: ${d.start_year} - ${d.end_year} <br>
-              Age: ${d.start_age} - ${d.end_age} <br>
-              Duration: ${d.duration} years <br>
-              GDP per capita: ${d.pcgdp ? "$" + d.pcgdp : "N/A"}
-            `)
-              .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
-              .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
-              .style("opacity", 1);
-          })
-          .on("mouseout", function () {
-            d3.select(this)
-              .attr("stroke", d => vis.selectedPoints.has(d.leader) ? "#e89f03" : (d.label === 1 ? "#aeaeca" : "#ddd"))
-              .attr("stroke-width", d => vis.selectedPoints.has(d.leader) ? 4 : (d.label === 1 ? 3 : 2))
-              .attr("marker-end", d => vis.getArrowMarker(d));
+                    vis.tooltip.html(`
+                        <strong>${d.leader}</strong><br>
+                        Country: ${d.country} <br>
+                        Years: ${d.start_year} - ${d.end_year} <br>
+                        Age: ${d.start_age} - ${d.end_age} <br>
+                        Duration: ${d.duration} years <br>
+                        GDP per capita: ${d.pcgdp ? "$" + d.pcgdp : "N/A"}
+                    `)
+                    .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
+                    .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
+                    .style("opacity", 1);
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                        .attr("stroke", d => vis.getArrowColor(d))
+                        .attr("stroke-width", d => vis.getArrowWidth(d))
+                        .attr("marker-end", d => vis.getArrowMarker(d));
 
-            vis.tooltip.style("opacity", 0);
-          })
-          .on("click", function (event, d) {
-            // event.stopPropagation(); // Prevent background click from firing
-            toggleSelection(d.leader);
-            // vis.renderVis(); // Re-render to update styles
-          })
-      );
-  }
+                    vis.tooltip.style("opacity", 0);
+                })
+                .on("click", function (event, d) {
+                    vis.toggleSelection(d.leader);
+                    vis.renderVis(); // Re-render to update styles
+                }),
+            update => update
+                .attr("stroke", d => vis.getArrowColor(d))
+                .attr("stroke-width", d => vis.getArrowWidth(d))
+                .attr("marker-end", d => vis.getArrowMarker(d))
+        );
+
+    // Bind data to text labels (politician names)
+    vis.chartArea.selectAll(".arrow-label")
+    .data(vis.filteredData, d => d.leader)
+    .join(
+        enter => enter.append("text")
+            .attr("class", "arrow-label")
+            .attr("x", d => vis.xScale(d.start_year))
+            .attr("y", d => vis.yScale(d.start_age))
+            .attr("text-anchor", "start")
+            .attr("font-size", "10px")
+            .attr("fill", d => vis.getLabelColor(d))
+            .attr("opacity", d => vis.shouldShowLabel(d) ? 1 : 0)
+            .text(d => d.leader)
+            .attr("transform", d => `rotate(-20, ${vis.xScale(d.start_year)}, ${vis.yScale(d.start_age)})`),
+        update => update
+            .attr("x", d => vis.xScale(d.start_year))
+            .attr("y", d => vis.yScale(d.start_age))
+            .attr("opacity", d => vis.shouldShowLabel(d) ? 1 : 0)
+            .attr("transform", d => `rotate(-20, ${vis.xScale(d.start_year)}, ${vis.yScale(d.start_age)})`)
+    );
+
+}
+
+getArrowColor(d) {
+  return this.selectedPoints.has(d.leader) ? "#e89f03" : (d.label === 1 ? "#aeaeca" : "#ddd");
+}
+
+getArrowWidth(d) {
+  return this.selectedPoints.has(d.leader) ? 4 : (d.label === 1 ? 3 : 2);
+}
+
+shouldShowLabel(d) {
+  return d.label === 1 || this.selectedPoints.has(d.leader);
+}
+
+getLabelColor(d) {
+  return this.selectedPoints.has(d.leader) ? "#e89f03" : "#444"; // Highlight selected labels
+}
+
 
   getArrowMarker(d) {
     if (this.selectedPoints.has(d.leader)) return "url(#arrow-head-highlighted-selected)";

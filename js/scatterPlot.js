@@ -147,6 +147,8 @@ class ScatterPlot {
                   .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
                   .style("opacity", 1);
           })
+
+          
           .on("mouseout", function () {
               d3.select(this).attr("stroke", "none");
               vis.tooltip.style("opacity", 0);

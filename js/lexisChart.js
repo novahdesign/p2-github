@@ -268,8 +268,10 @@ getLabelColor(d) {
   toggleSelection(leader) {
     if (this.selectedPoints.has(leader)) {
       this.selectedPoints.delete(leader);
+      scatterPlot.updateVis();
     } else {
       this.selectedPoints.add(leader);
+      scatterPlot.updateVis();
     }
   }
 

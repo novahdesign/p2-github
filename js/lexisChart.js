@@ -255,7 +255,9 @@ shouldShowLabel(d) {
 }
 
 getLabelColor(d) {
-  return this.selectedPoints.has(d.leader) ? "#e89f03" : "#444"; // Highlight selected labels
+  // black label for all selected TEXT
+  return "#444";
+  // return this.selectedPoints.has(d.leader) ? "#444" : "#444"; // Highlight selected labels
 }
 
 

@@ -133,25 +133,49 @@ class ScatterPlot {
           .style("fill-opacity", d => vis.selectedPoints.has(d.leader) ? 0.95 : 0.7)
 
           // Hover: Outline and darken
-          .on("mouseover", function (event, d) {
-              d3.select(this)
-                  .attr("stroke", "black")
-                  .attr("stroke-width", 2);
+        //   .on("mouseover", function (event, d) {
+        //       d3.select(this)
+        //           .attr("stroke", "black")
+        //           .attr("stroke-width", 2);
 
-              vis.tooltip.html(`
-                  <strong>${d.leader}</strong><br>
-                  Country: ${d.country} <br>
-                  GDP per capita: $${d.pcgdp}
-              `)
-                  .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
-                  .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
-                  .style("opacity", 1);
-          })
+        //       vis.tooltip.html(`
+        //           <strong>${d.leader}</strong><br>
+        //           Country: ${d.country} <br>
+        //           GDP per capita: $${d.pcgdp}
+        //       `)
+        //           .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
+        //           .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
+        //           .style("opacity", 1);
+        //   })
+
+        // Hover: Outline and darken
+        .on("mouseover", function (event, d) {
+            d3.select(this)
+                .attr("stroke", "black")
+                .attr("stroke-width", 2);
+
+            // **D3 Tooltip**
+            d3.select("#tooltip")
+                .style("display", "block")
+                .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
+                .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
+                .html(`
+                    <div><strong>${d.leader}</strong></div>
+                    <div><i>${d.country}, ${d.start_year} - ${d.end_year}</i></div>
+                    <div> • Age: ${d.start_age} - ${d.end_age}</div>
+                    <div> • Duration: ${d.duration} years</div>
+                    <div> • GDP per capita: ${d.pcgdp ? "$" + d.pcgdp : "N/A"}</div>
+                `);
+        })
 
           
           .on("mouseout", function () {
               d3.select(this).attr("stroke", "none");
               vis.tooltip.style("opacity", 0);
+
+                // Hide tooltip
+            d3.select("#tooltip").style("display", "none");
+    
           })
 
           .on("click", function (event, d) {

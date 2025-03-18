@@ -69,6 +69,8 @@ function filterData() {
   // Update datasets for each visualization
   lexisChart.data = genderFilteredData; // Lexis Chart only sees the final filtered data
   barChart.data = filteredData; // Bar Chart always sees country-filtered data (no gender filtering)
+  
+  scatterPlot.data = filteredData;
   scatterPlot.updateOpacity(); // Scatter Plot updates opacity based on gender selection
 
   // Re-render views

@@ -49,7 +49,7 @@ function filterData() {
 
  let filteredData;
 
- console.log('hi' + data)
+ console.log('reached filter hiii not yet filtered' + data)
 
  // Apply the country group filter + ensure duration > 0
   filteredData = data.filter(d => d[selectedGroup] === 1 && d.duration > 0);

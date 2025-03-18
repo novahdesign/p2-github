@@ -226,7 +226,7 @@ class LexisChart {
         enter => enter.append("text")
             .attr("class", "arrow-label")
             .attr("x", d => vis.xScale(d.start_year))
-            .attr("y", d => vis.yScale(d.start_age))
+            .attr("y", d => vis.yScale(d.start_age) - 5)
             .attr("text-anchor", "start")
             .attr("font-size", "10px")
             .attr("fill", d => vis.getLabelColor(d))
@@ -235,7 +235,7 @@ class LexisChart {
             .attr("transform", d => `rotate(-20, ${vis.xScale(d.start_year)}, ${vis.yScale(d.start_age)})`),
         update => update
             .attr("x", d => vis.xScale(d.start_year))
-            .attr("y", d => vis.yScale(d.start_age))
+            .attr("y", d => vis.yScale(d.start_age) - 5)
             .attr("opacity", d => vis.shouldShowLabel(d) ? 1 : 0)
             .attr("transform", d => `rotate(-20, ${vis.xScale(d.start_year)}, ${vis.yScale(d.start_age)})`)
     );

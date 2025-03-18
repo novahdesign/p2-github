@@ -117,7 +117,7 @@ class ScatterPlot {
     .on("click", function() {
         vis.selectedPoints.clear(); // Clear all selections
         vis.updateVis(); // Update scatter plot
-        // lexisChart.updateVis(); // Update Lexis chart
+        lexisChart.updateVis();
     });
 
       // Bind data to points

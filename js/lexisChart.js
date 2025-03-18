@@ -10,7 +10,6 @@ class LexisChart {
 
     this.data = _data;
     this.selectedArrows = new Set(); // Track selected arrows
-
     this.initVis();
   }
 

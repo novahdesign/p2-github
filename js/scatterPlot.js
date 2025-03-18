@@ -137,15 +137,21 @@ class ScatterPlot {
               vis.tooltip.style("opacity", 0);
           })
 
-          // Click to select/deselect points
-          .on("click", function (event, d) {
-              if (vis.selectedPoints.has(d.leader)) {
-                  vis.selectedPoints.delete(d.leader);
-              } else {
-                  vis.selectedPoints.add(d.leader);
-              }
-              vis.renderVis(); // Update selection
-          });
+          // // Click to select/deselect points
+          // .on("click", function (event, d) {
+          //     if (vis.selectedPoints.has(d.leader)) {
+          //         vis.selectedPoints.delete(d.leader);
+          //     } else {
+          //         vis.selectedPoints.add(d.leader);
+          //     }
+          //     vis.renderVis(); // Update selection
+          // });
+
+                // Click to select/deselect
+                .on("click", function (event, d) {
+                  event.stopPropagation(); // Prevent background click from firing
+                  toggleSelection(d.leader);
+              });
 
       // update opacity
       vis.updateOpacity();

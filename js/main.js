@@ -2,18 +2,18 @@
  * Load data from CSV file asynchronously and render charts
  */
 
-// Global dispatcher to manage interactions between views
-// source: https://github.com/UBC-InfoVis/447-materials/tree/25Jan/tutorials/5_D3_Tutorial_MV_Advanced_Interactivity
-const dispatcher = d3.dispatch('filterGender', 'filterCountries', 'resetFilters');
 
 // global visualizations
 let lexisChart, barChart, scatterPlot;
+
 // Global variable to track selected group (default: OECD)
 let selectedGroup = "oecd";
 
 let filteredData = []; // Stores country-filtered data
 let genderFilteredData = []; // Stores additional gender-filtered data
 
+// for selection for scatterplot and lexis interaction
+let selectedPoints = new Set(); // Global set for selection
 
 d3.csv('data/leaderlist.csv').then(_data => {
   data = _data;
@@ -76,43 +76,33 @@ function filterData() {
   barChart.updateVis();
   scatterPlot.updateVis();
 }
-// // Function to filter data based on selected group
-// function filterData() {
-//  let filteredData;
-//  // Apply the country group filter + ensure duration > 0
-// filteredData = data.filter(d => d[selectedGroup] === 1 && d.duration > 0);
 
-//   // Apply gender filter (only if something is selected)
-//   if (barChart.genderFilter.length > 0) {
-//     filteredData = filteredData.filter(d => barChart.genderFilter.includes(d.gender));
-// }
-// console.log(`Filtering by: ${selectedGroup}`, filteredData);
-// console.log(`Filtering by 2: ${barChart.genderFilter}`, filteredData);
+// this is for scatterplot and lexis chart interaction
+// update the selectedPoliticians set initialized at top
+function updateSelections() {
+  lexisChart.selectedPoints = selectedPoints;
+  scatterPlot.selectedPoints = selectedPoints;
 
-//  // Update datasets in each visualization and re-render
-//  lexisChart.data = filteredData;
-//  barChart.data = filteredData;
-//  scatterPlot.data = filteredData;
+  lexisChart.updateVis();
+  scatterPlot.updateVis();
+}
 
-//  // Call updateVis() directly
-//  lexisChart.updateVis();
-//  barChart.updateVis();
-//  scatterPlot.updateVis();
-// }
+// Function to toggle point selection
+function toggleSelection(leader) {
+  if (selectedPoints.has(leader)) {
+      selectedPoints.delete(leader); // Deselect
+  } else {
+      selectedPoints.add(leader); // Select
+  }
+  console.log(selectedPoints)
+  updateSelections();
+}
 
-// // Function to reset selections when dropdown changes
-// function resetSelections() {
-//  // Clear selected gender, arrows, and points
-//  lexisChart.selectedArrows.clear();
-//  scatterPlot.selectedPoints = new Set();
-//  barChart.selectedGender = null;
-
-//  // Ensure visualizations update to reflect deselections
-//  lexisChart.updateVis();
-//  scatterPlot.updateVis();
-//  barChart.updateVis();
-// }
-
+// Function to clear selection (only in scatter plot)
+function clearSelection() {
+  selectedPoints.clear();
+  updateSelections();
+}
 /*
  * Todo:
  * - initialize views

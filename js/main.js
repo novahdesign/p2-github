@@ -48,7 +48,13 @@ function filterData() {
  let filteredData;
  // Apply the country group filter + ensure duration > 0
 filteredData = data.filter(d => d[selectedGroup] === 1 && d.duration > 0);
- console.log(`Filtering by: ${selectedGroup}`, filteredData);
+
+  // Apply gender filter (only if something is selected)
+  if (barChart.genderFilter.length > 0) {
+    filteredData = filteredData.filter(d => barChart.genderFilter.includes(d.gender));
+}
+console.log(`Filtering by: ${selectedGroup}`, filteredData);
+console.log(`Filtering by 2: ${barChart.genderFilter}`, filteredData);
 
  // Update datasets in each visualization and re-render
  lexisChart.data = filteredData;

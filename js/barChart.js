@@ -9,7 +9,10 @@ class BarChart {
       };
 
       this.data = _data;
-      this.selectedGender = null; // Track selected gender
+      // this.selectedGender = null; // Track selected gender
+      
+      this.genderFilter = []; // Track selected gender filters
+
       this.initVis();
   }
 
@@ -128,15 +131,28 @@ class BarChart {
               vis.tooltip.style("opacity", 0);
           })
 
-          // Click to filter by gender
-          .on("click", function (event, d) {
-              if (vis.selectedGender === d.gender) {
-                  vis.selectedGender = null; // Reset filter if clicking same bar
-              } else {
-                  vis.selectedGender = d.gender;
-              }
-              vis.renderVis(); // Re-render bars to reflect selection
-          });
+          
+        // Click to filter by gender
+        .on("click", function (event, d) {
+          const isActive = vis.genderFilter.includes(d.gender);
+
+          if (isActive) {
+              // Remove filter (reset to show all)
+              vis.genderFilter = [];
+          } else {
+              // Apply filter (show only selected gender)
+              vis.genderFilter = [d.gender];
+          }
+
+          console.log(`Selected Genders: ${vis.genderFilter}`);
+
+          // Update all views
+          filterData();
+
+          // Update bar style
+          // vis.chart.selectAll(".bar")
+              // .attr("fill", d => vis.genderFilter.includes(d.gender) ? "#555" : "#888");
+      });
 
       // Update axes
       vis.xAxisGroup.call(vis.xAxis);

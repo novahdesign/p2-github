@@ -1,7 +1,14 @@
 /**
  * Load data from CSV file asynchronously and render charts
  */
-d3.csv('data/leaderlist.csv').then(data => {
+
+let lexisChart, barChart, scatterPlot;
+// Global variable to track selected group (default: OECD)
+let selectedGroup = "oecd";
+
+
+d3.csv('data/leaderlist.csv').then(_data => {
+  data = _data;
 
   // Convert columns to numerical values
   data.forEach(d => {
@@ -17,20 +24,60 @@ d3.csv('data/leaderlist.csv').then(data => {
   data.sort((a,b) => a.label - b.label);
 
   // init lexisChart
-  // const vis = new LexisChart({ parentElement: "#lexis-chart" }, data);
-
-  // init Bar Chart
+  // init barChart
+  // init scatterPlot <3
 
   lexisChart = new LexisChart({ parentElement: "#lexis-chart" }, data);
   barChart = new BarChart({ parentElement: "#bar-chart" }, data);
   scatterPlot = new ScatterPlot({ parentElement: "#scatter-plot" }, data);
 
-  
 
+ // Add event listener for the dropdown filter
+ d3.select("#country-selector").on("change", function () {
+     selectedGroup = this.value;
+     resetSelections(); // Clear selected gender, arrows, and points
+     filterData(); // Apply filter
+ });
 
-  lexisChart.updateVis();
-
+ // Initial filtering with default group (OECD)
+ filterData();
 });
+
+// Function to filter data based on selected group
+function filterData() {
+//  if (!data) return; // Prevents filtering if data isn't loaded
+
+ let filteredData;
+
+ console.log('hi' + data)
+
+ // Apply the country group filter + ensure duration > 0
+  filteredData = data.filter(d => d[selectedGroup] === 1 && d.duration > 0);
+ console.log(`Filtering by: ${selectedGroup}`, filteredData);
+
+ // Update datasets in each visualization and re-render
+ lexisChart.data = filteredData;
+ barChart.data = filteredData;
+ scatterPlot.data = filteredData;
+
+ // Call updateVis() directly
+ lexisChart.updateVis();
+ barChart.updateVis();
+ scatterPlot.updateVis();
+}
+
+// Function to reset selections when dropdown changes
+function resetSelections() {
+ // Clear selected gender, arrows, and points
+ lexisChart.selectedArrows.clear();
+ scatterPlot.selectedPoints = new Set();
+ barChart.selectedGender = null;
+
+ // Ensure visualizations update to reflect deselections
+ lexisChart.updateVis();
+ scatterPlot.updateVis();
+ barChart.updateVis();
+}
 
 /*
  * Todo:

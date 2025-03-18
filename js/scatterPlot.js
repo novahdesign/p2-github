@@ -115,7 +115,7 @@ class ScatterPlot {
           .attr("r", 5)
           .attr("fill", d => vis.selectedPoints.has(d.leader) ? "blue" : "#ccc")
           .style("cursor", "pointer")
-          .style("fill-opacity", d => vis.selectedPoints.has(d.leader) ? 1 : 0.7)
+          .style("fill-opacity", d => vis.selectedPoints.has(d.leader) ? 0.95 : 0.7)
 
           // Hover: Outline and darken
           .on("mouseover", function (event, d) {

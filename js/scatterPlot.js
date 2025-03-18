@@ -80,6 +80,28 @@ class ScatterPlot {
       vis.renderVis();
   }
 
+  // update opacity helper
+  updateOpacity() {
+    let vis = this;
+
+    let activeGenders = barChart.genderFilter;
+    let hasFilter = activeGenders.length > 0;
+
+    // set the opacity to 0.7 for active and 0.15 for inactive points.
+    vis.chart.selectAll(".point")
+        .transition().duration(300)
+        .style("opacity", d => {
+            if (!hasFilter) return 1;
+            return activeGenders.includes(d.gender) ? 0.7 : 0.15;
+        })
+        .style("pointer-events", d => {
+            if (!hasFilter) return "auto";
+            return activeGenders.includes(d.gender) ? "auto" : "none";
+        });
+  }
+
+
+
   renderVis() {
       let vis = this;
 
@@ -124,6 +146,9 @@ class ScatterPlot {
               }
               vis.renderVis(); // Update selection
           });
+
+      // update opacity
+      vis.updateOpacity();
 
       // Update axes
       vis.xAxisGroup.call(vis.xAxis);

@@ -150,8 +150,8 @@ class BarChart {
           filterData();
 
           // Update bar style
-          // vis.chart.selectAll(".bar")
-              // .attr("fill", d => vis.genderFilter.includes(d.gender) ? "#555" : "#888");
+          vis.chart.selectAll(".bar")
+              .attr("fill", d => vis.genderFilter.includes(d.gender) ? "#555" : "#888");
       });
 
       // Update axes

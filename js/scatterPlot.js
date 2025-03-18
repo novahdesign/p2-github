@@ -105,6 +105,21 @@ class ScatterPlot {
   renderVis() {
       let vis = this;
 
+       // Background rectangle to capture clicks outside of points
+    vis.chart.selectAll(".background-rect")
+    .data([null])
+    .join("rect")
+    .attr("class", "background-rect")
+    .attr("width", vis.width)
+    .attr("height", vis.height)
+    .attr("fill", "transparent")
+    .style("cursor", "pointer")
+    .on("click", function() {
+        vis.selectedPoints.clear(); // Clear all selections
+        vis.updateVis(); // Update scatter plot
+        // lexisChart.updateVis(); // Update Lexis chart
+    });
+
       // Bind data to points
       const circles = vis.chart.selectAll(".point")
           .data(vis.filteredData, d => d.leader)

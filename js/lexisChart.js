@@ -9,7 +9,9 @@ class LexisChart {
     };
 
     this.data = _data;
-    this.selectedArrows = new Set(); // Track selected arrows
+    this.selectedPoints = new Set(); // Track selected arrows
+
+    // this.selectedArrows = new Set(); // Track selected arrows
     this.initVis();
   }
 
@@ -123,8 +125,10 @@ class LexisChart {
           .attr("x2", d => vis.xScale(d.end_year))
           .attr("y1", d => vis.yScale(d.start_age))
           .attr("y2", d => vis.yScale(d.end_age))
-          .attr("stroke", d => d.label === 1 ? "#aeaeca" : "#ddd")
-          .attr("stroke-width", d => d.label === 1 ? 3 : 2)
+          .attr("stroke", d => selectedPoints.has(d.leader) ? "#e89f03" : (d.label === 1 ? "#aeaeca" : "#ddd")) // Change full arrow color
+          .attr("stroke-width", d => selectedPoints.has(d.leader) ? 4 : (d.label === 1 ? 3 : 2)) // Thicker for selected
+          // .attr("stroke", d => d.label === 1 ? "#aeaeca" : "#ddd")
+          // .attr("stroke-width", d => d.label === 1 ? 3 : 2)
           .attr("marker-end", d => vis.getArrowMarker(d))
           .style("cursor", "pointer")
           .on("mouseover", function (event, d) {
@@ -144,30 +148,31 @@ class LexisChart {
           })
           .on("mouseout", function () {
             d3.select(this)
-              .attr("stroke", d => vis.selectedArrows.has(d.leader) ? "#e89f03" : (d.label === 1 ? "#aeaeca" : "#ddd"))
-              .attr("stroke-width", d => vis.selectedArrows.has(d.leader) ? 4 : (d.label === 1 ? 3 : 2))
+              .attr("stroke", d => vis.selectedPoints.has(d.leader) ? "#e89f03" : (d.label === 1 ? "#aeaeca" : "#ddd"))
+              .attr("stroke-width", d => vis.selectedPoints.has(d.leader) ? 4 : (d.label === 1 ? 3 : 2))
               .attr("marker-end", d => vis.getArrowMarker(d));
 
             vis.tooltip.style("opacity", 0);
           })
           .on("click", function (event, d) {
-            vis.toggleSelection(d.leader);
-            vis.renderVis(); // Re-render to update styles
+            // event.stopPropagation(); // Prevent background click from firing
+            toggleSelection(d.leader);
+            // vis.renderVis(); // Re-render to update styles
           })
       );
   }
 
   getArrowMarker(d) {
-    if (this.selectedArrows.has(d.leader)) return "url(#arrow-head-highlighted-selected)";
+    if (this.selectedPoints.has(d.leader)) return "url(#arrow-head-highlighted-selected)";
     if (d.label === 1) return "url(#arrow-head-highlighted)";
     return "url(#arrow-head)";
   }
 
   toggleSelection(leader) {
-    if (this.selectedArrows.has(leader)) {
-      this.selectedArrows.delete(leader);
+    if (this.selectedPoints.has(leader)) {
+      this.selectedPoints.delete(leader);
     } else {
-      this.selectedArrows.add(leader);
+      this.selectedPoints.add(leader);
     }
   }
 

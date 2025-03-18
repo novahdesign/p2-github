@@ -99,10 +99,10 @@ function toggleSelection(leader) {
 }
 
 // Function to clear selection (only in scatter plot)
-function clearSelection() {
-  selectedPoints.clear();
-  updateSelections();
-}
+// function clearSelection() {
+//   selectedPoints.clear();
+//   updateSelections();
+// }
 /*
  * Todo:
  * - initialize views

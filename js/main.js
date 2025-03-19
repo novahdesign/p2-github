@@ -48,14 +48,32 @@ d3.csv("data/leaderlist.csv").then((_data) => {
 
   // Add event listener for the dropdown filter
   d3.select("#country-selector").on("change", function () {
+    // selectedPoints.clear(); // clear selected points in lexis chart arrows and scatter plot
+    resetSelections(); // Clear selected gender, arrows, and points
+
     selectedGroup = this.value;
-    //  resetSelections(); // Clear selected gender, arrows, and points
+
     filterData(); // Apply filter
   });
 
   // Initial filtering with default group (OECD)
   filterData();
 });
+
+function resetSelections() {
+  // Clear selected gender filters
+  barChart.genderFilter = [];
+
+  // Clear selected points/arrows in scatter plot & lexis chart
+  selectedPoints.clear();
+  lexisChart.selectedPoints.clear();
+  scatterPlot.selectedPoints.clear();
+
+  // Ensure all charts reflect reset state
+  updateSelections();
+  barChart.updateVis();
+}
+
 
 function filterData() {
   // Apply Global Filter: Country Selection & Duration > 0

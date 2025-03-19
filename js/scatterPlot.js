@@ -137,12 +137,36 @@ class ScatterPlot {
         //   .ticks(5) // Ensure it matches Y-axis ticks
           .tickSize(-vis.width) // Extend across chart
           .tickFormat("") // Hide labels
-      );
+      )
+      
 
     vis.gridGroup.lower(); // **Send grid to the very back**
 
     // Remove unwanted default Y-axis line
     vis.gridGroup.select(".domain").remove();
+
+    vis.gridGroupX = vis.chart
+  .append("g")
+  .attr("class", "grid grid-x")
+  .attr("transform", `translate(0, ${vis.height})`) // ✅ Aligns with X-axis
+  .call(
+    d3.axisBottom(vis.xScale)
+      .tickSize(-vis.height) // Extend lines across the chart
+      .tickFormat("") // Hide tick labels
+  );
+
+// Send grid lines to the back
+vis.gridGroupX.lower();
+
+// Remove unwanted default x-axis line
+vis.gridGroupX.select(".domain").remove();
+
+// Style grid lines 
+vis.gridGroupX.selectAll(".tick line")
+  .attr("stroke", "#ddd") // Light grey
+  .attr("stroke-width", 0.8);
+
+
 
     // Background rectangle to capture clicks outside of points
     vis.chart
@@ -173,8 +197,6 @@ class ScatterPlot {
       .attr("fill", (d) =>
         vis.selectedPoints.has(d.leader) ? "#e89f03" : "#4f4f4f"
       )
-
-     
       .style("cursor", "pointer")
       .style("fill-opacity", (d) =>
         vis.selectedPoints.has(d.leader) ? 0.95 : 0.7
@@ -211,6 +233,8 @@ class ScatterPlot {
       })
 
       .on("click", function (event, d) {
+        // const isActive = vis.selectedPoints.has(d.leader);
+
         if (selectedPoints.has(d.leader)) {
           selectedPoints.delete(d.leader); // Deselect point
         } else {
@@ -218,7 +242,10 @@ class ScatterPlot {
         }
 
         updateSelections(); // Update Lexis and Scatter Plot
-      });
+        // d3.select(this).classed('active', !isActive); // Add class to style active filters with CSS
+  
+    
+    });
     // update opacity
     vis.updateOpacity();
     // Update axes

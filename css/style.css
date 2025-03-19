@@ -71,6 +71,10 @@
   stroke: #333;
 }
 
+.point.active {
+    stroke: #333;
+  }
+
 #lexis-chart {
     border: 1px solid #cfcfcf; /* Light grey border */
     border-radius: 4px; /* Optional: Slightly rounded corners */

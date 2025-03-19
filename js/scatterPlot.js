@@ -171,9 +171,10 @@ class ScatterPlot {
       .attr("r", 5)
 
       .attr("fill", (d) =>
-        vis.selectedPoints.has(d.leader) ? "#e89f03" : "#ccc"
+        vis.selectedPoints.has(d.leader) ? "#e89f03" : "#4f4f4f"
       )
 
+     
       .style("cursor", "pointer")
       .style("fill-opacity", (d) =>
         vis.selectedPoints.has(d.leader) ? 0.95 : 0.7

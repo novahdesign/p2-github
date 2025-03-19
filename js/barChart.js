@@ -155,8 +155,6 @@ class BarChart {
           vis.genderFilter = [d.gender];
         }
 
-        console.log(`Selected Genders: ${vis.genderFilter}`);
-
         // Update all views
         filterData();
 

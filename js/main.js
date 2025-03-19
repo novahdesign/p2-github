@@ -70,10 +70,6 @@ function filterData() {
     genderFilteredData = filteredData; // No gender filter applied
   }
 
-  console.log(
-    `Filtered Data: ${filteredData.length}, Gender-Filtered: ${genderFilteredData.length}`
-  );
-
   // Update datasets for each visualization
   lexisChart.data = genderFilteredData; // Lexis Chart only sees the final filtered data
   barChart.data = filteredData; // Bar Chart always sees country-filtered data (no gender filtering)
@@ -104,6 +100,5 @@ function toggleSelection(leader) {
   } else {
     selectedPoints.add(leader); // Select
   }
-  console.log(selectedPoints);
   updateSelections();
 }

@@ -3,7 +3,7 @@
  */
 
 /*
- * notes; what main.js does:
+ * notes; this is what main.js does:
  * - initialize views
  * - filter data
  * - listen to events and update views
@@ -45,7 +45,7 @@ d3.csv("data/leaderlist.csv").then((_data) => {
 
   // Add event listener for the dropdown filter
   d3.select("#country-selector").on("change", function () {
-    resetSelections(); // Clear selected gender, arrows, and points
+    resetSelections(); // Clear selected gender, arrows, and points upon CHANGE
     selectedGroup = this.value; // set Selected Group to user input
     filterData(); // Apply filter
   });
@@ -68,6 +68,9 @@ function resetSelections() {
   barChart.updateVis();
 }
 
+// Filters data for 1) global country seleciton and duration > 0 
+// 2) applies gender filter based on the user clicking on barchart
+// updates visualizations accordingly
 function filterData() {
   // Apply Global Filter: Country Selection & Duration > 0
   filteredData = data.filter((d) => d[selectedGroup] === 1 && d.duration > 0);
@@ -83,19 +86,20 @@ function filterData() {
 
   // Update datasets for each visualization
   lexisChart.data = genderFilteredData; // Lexis Chart only sees the final filtered data
+  
   barChart.data = filteredData; // Bar Chart always sees country-filtered data (no gender filtering)
 
   scatterPlot.data = filteredData; // ScatterPlot gets to see country-filtered data as well. BUT needs to change opacity.
   scatterPlot.updateOpacity(); // Scatter Plot updates opacity based on gender selection
 
-  // Re-render views
+  // Re-render views and update
   lexisChart.updateVis();
   barChart.updateVis();
   scatterPlot.updateVis();
 }
 
-// this is for scatterplot and lexis chart interaction
-// update the selectedPoliticians set initialized at top
+// Update selected points for: scatterplot and lexis chart interaction
+// Updates the selectedPoliticians set initialized at top
 function updateSelections() {
   lexisChart.selectedPoints = selectedPoints;
   scatterPlot.selectedPoints = selectedPoints;

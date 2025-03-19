@@ -105,7 +105,7 @@ class BarChart {
     // remove prev lines
     vis.chart.selectAll(".grid").remove();
 
-    // ** Append Y-axis gridlines **
+    // Append Y-axis gridlines
     vis.gridGroup = vis.chart
       .append("g")
       .attr("class", "grid")
@@ -118,7 +118,7 @@ class BarChart {
           .tickFormat("") // Hide labels
       );
 
-    vis.gridGroup.lower(); // **Send grid to the very back**
+    vis.gridGroup.lower(); // Send grid to the very back
 
     // Remove unwanted default Y-axis line
     vis.gridGroup.select(".domain").remove();
@@ -172,16 +172,14 @@ class BarChart {
         // Update all views
         filterData();
 
-        d3.select(this).classed('active', !isActive); // Add class to style active filters with CSS
-
-
-
+        d3.select(this).classed("active", !isActive); // Add class to style active filters with CSS
 
         // Update bar style
         vis.chart
-        .selectAll(".bar")
-        .attr("fill", (d) => vis.genderFilter.includes(d.gender) ? "#606187" : "#aeaeca");
-          
+          .selectAll(".bar")
+          .attr("fill", (d) =>
+            vis.genderFilter.includes(d.gender) ? "#606187" : "#aeaeca"
+          );
       });
 
     // Update axes

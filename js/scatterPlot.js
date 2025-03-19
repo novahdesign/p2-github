@@ -238,7 +238,6 @@ class ScatterPlot {
         }
 
         updateSelections(); // Update Lexis and Scatter Plot
-        // d3.select(this).classed('active', !isActive); // Add class to style active filters with CSS
       });
     // update opacity
     vis.updateOpacity();

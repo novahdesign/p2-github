@@ -62,7 +62,7 @@ class BarChart {
     vis.chart
       .append("text")
       .attr("class", "axis-label")
-      .attr("x", -vis.config.margin.left)
+      .attr("x", -vis.config.margin.left + 5)
       .attr("y", -10)
       .style("font-weight", "bold")
       .text("Gender");
@@ -134,7 +134,7 @@ class BarChart {
       .attr("y", (d) => vis.yScale(d.count))
       .attr("height", (d) => vis.height - vis.yScale(d.count))
       .attr("fill", (d) =>
-        vis.selectedGender === d.gender ? "#000" : "#aeaeca"
+        vis.selectedGender === d.gender ? "#606187" : "#aeaeca"
       )
       .style("cursor", "pointer")
 
@@ -172,12 +172,16 @@ class BarChart {
         // Update all views
         filterData();
 
+        d3.select(this).classed('active', !isActive); // Add class to style active filters with CSS
+
+
+
+
         // Update bar style
         vis.chart
-          .selectAll(".bar")
-          .attr("fill", (d) =>
-            vis.genderFilter.includes(d.gender) ? "#000" : "#aeaeca"
-          );
+        .selectAll(".bar")
+        .attr("fill", (d) => vis.genderFilter.includes(d.gender) ? "#606187" : "#aeaeca");
+          
       });
 
     // Update axes

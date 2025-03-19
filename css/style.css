@@ -65,3 +65,31 @@
 .axis .tick line {
     stroke: none;
 }
+
+
+.bar.active {
+  stroke: #333;
+}
+
+#lexis-chart {
+    border: 1px solid #cfcfcf; /* Light grey border */
+    border-radius: 4px; /* Optional: Slightly rounded corners */
+    padding: 2px;
+  }
+
+  #bar-chart {
+    border: 1px solid #cfcfcf; /* Light grey border */
+    border-radius: 4px; /* Optional: Slightly rounded corners */
+    padding: 2px;
+  }
+
+  #scatter-plot {
+    border: 1px solid #cfcfcf; /* Light grey border */
+    border-radius: 4px; /* Optional: Slightly rounded corners */
+    padding: 2px;
+  }
+
+  body, svg, text {
+    font-family: Arial, sans-serif;
+  }
+  

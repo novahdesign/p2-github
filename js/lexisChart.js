@@ -68,10 +68,10 @@ class LexisChart {
     // Axis labels
     vis.chartArea
       .append("text")
-      .attr("x", -vis.config.margin.left)
-      .attr("y", -2)
+      .attr("x", -vis.config.margin.left + 5)
+      .attr("y", 2)
       .attr("class", "axis-label")
-      .attr("font-size", 11)
+      .attr("font-size", 15)
       .attr("font-weight", "bold")
       .text("Age");
 

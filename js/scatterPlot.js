@@ -63,12 +63,14 @@ class ScatterPlot {
       .attr("x", vis.width)
       .attr("y", vis.height + 40)
       .attr("text-anchor", "end")
+      .style("font-weight", "bold")
+
       .text("GDP per Capita (US$)");
 
     vis.chart
       .append("text")
       .attr("class", "axis-label")
-      .attr("x", -vis.config.margin.left)
+      .attr("x", -vis.config.margin.left + 5)
       .attr("y", -10)
       .style("font-weight", "bold")
       .text("Age");

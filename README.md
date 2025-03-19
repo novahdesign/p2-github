@@ -4,3 +4,5 @@ This d3 tutorial was used to base interaction logic on: https://github.com/UBC-I
 
 ChatGPT was used as a reference for d3 syntax and helper functions.
 
+Prettier was used to format code, no logic changed.
+

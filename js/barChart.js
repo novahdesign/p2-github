@@ -17,28 +17,18 @@ class BarChart {
     let vis = this;
 
     // Calculate chart dimensions
-    vis.width =
-      vis.config.containerWidth -
-      vis.config.margin.left -
-      vis.config.margin.right;
-    vis.height =
-      vis.config.containerHeight -
-      vis.config.margin.top -
-      vis.config.margin.bottom;
+    vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
+    vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
     // Create SVG element
-    vis.svg = d3
-      .select(vis.config.parentElement)
-      .attr("id", "bar-chart")
-      .attr("width", vis.config.containerWidth)
-      .attr("height", vis.config.containerHeight);
+    vis.svg = d3.select(vis.config.parentElement)
+        .attr("id", "bar-chart")
+        .attr("width", vis.config.containerWidth)
+        .attr("height", vis.config.containerHeight);
 
-    vis.chart = vis.svg
-      .append("g")
-      .attr(
-        "transform",
-        `translate(${vis.config.margin.left},${vis.config.margin.top})`
-      );
+    // Append chart group
+    vis.chart = vis.svg.append("g")
+        .attr("transform", `translate(${vis.config.margin.left},${vis.config.margin.top})`);
 
     // Initialize scales
     vis.xScale = d3.scaleBand().range([0, vis.width]).padding(0.2);
@@ -48,32 +38,124 @@ class BarChart {
     vis.xAxis = d3.axisBottom(vis.xScale);
     vis.yAxis = d3.axisLeft(vis.yScale).ticks(5).tickFormat(d3.format("d"));
 
-    // Append axes
-    vis.xAxisGroup = vis.chart
-      .append("g")
-      .attr("class", "x-axis")
-      .attr("transform", `translate(0, ${vis.height})`);
-
+    // Append Y-axis group
     vis.yAxisGroup = vis.chart.append("g").attr("class", "y-axis");
 
+    // Append X-axis group
+    vis.xAxisGroup = vis.chart.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", `translate(0, ${vis.height})`);
+
+   
+
     // Axis labels
-    vis.chart
-      .append("text")
-      .attr("class", "axis-label")
-      .attr("x", -vis.config.margin.left)
-      .attr("y", -10)
-      .style("font-weight", "bold")
-      .text("Gender");
+    vis.chart.append("text")
+        .attr("class", "axis-label")
+        .attr("x", -vis.config.margin.left)
+        .attr("y", -10)
+        .style("font-weight", "bold")
+        .text("Gender");
 
     // Initialize tooltip
-    vis.tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
+    vis.tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
     vis.updateVis();
-  }
+}
+
+
+
+//   initVis() {
+//     let vis = this;
+
+//     // Calculate chart dimensions
+//     vis.width =
+//       vis.config.containerWidth -
+//       vis.config.margin.left -
+//       vis.config.margin.right;
+//     vis.height =
+//       vis.config.containerHeight -
+//       vis.config.margin.top -
+//       vis.config.margin.bottom;
+
+//     // Create SVG element
+//     vis.svg = d3
+//       .select(vis.config.parentElement)
+//       .attr("id", "bar-chart")
+//       .attr("width", vis.config.containerWidth)
+//       .attr("height", vis.config.containerHeight);
+
+//     vis.chart = vis.svg
+//       .append("g")
+//       .attr(
+//         "transform",
+//         `translate(${vis.config.margin.left},${vis.config.margin.top})`
+//       );
+
+//     // Initialize scales
+//     vis.xScale = d3.scaleBand().range([0, vis.width]).padding(0.2);
+//     vis.yScale = d3.scaleLinear().range([vis.height, 0]);
+
+//     // Create axes
+//     vis.xAxis = d3.axisBottom(vis.xScale);
+//     vis.yAxis = d3.axisLeft(vis.yScale).ticks(5).tickFormat(d3.format("d"));
+
+//     // Append axes
+//     vis.xAxisGroup = vis.chart
+//       .append("g")
+//       .attr("class", "x-axis")
+//       .attr("transform", `translate(0, ${vis.height})`);
+
+//     vis.yAxisGroup = vis.chart.append("g").attr("class", "y-axis");
+
+//     // Axis labels
+//     vis.chart
+//       .append("text")
+//       .attr("class", "axis-label")
+//       .attr("x", -vis.config.margin.left)
+//       .attr("y", -10)
+//       .style("font-weight", "bold")
+//       .text("Gender");
+
+//     // Initialize tooltip
+//     vis.tooltip = d3
+//       .select("body")
+//       .append("div")
+//       .attr("class", "tooltip")
+//       .style("opacity", 0);
+
+
+//       // Add Y-axis gridlines (horizontal) at the correct position
+// vis.chart.append("g")
+// .attr("class", "grid grid-y")
+// .call(d3.axisLeft(vis.yScale)
+//     .tickSize(-vis.width) // Extend lines across the chart
+//     .tickFormat("") // Hide tick labels
+// )
+// .call(g => g.select(".domain").remove()) // Remove black Y-axis line
+// .selectAll(".tick line")
+// .attr("stroke", "#ddd") // Light grey
+// .attr("stroke-width", 0.8);
+
+//     // grid
+//         // Add Y-axis gridlines (horizontal)
+// // vis.chart.append("g")
+// //     .attr("class", "grid")
+// //     .call(d3.axisLeft(vis.yScale)
+// //     // .call(d3.vis.yScale
+
+// //         .tickSize(-vis.width) // Extend lines across the chart
+// //         .ticks(5)
+// //         .tickFormat("") // Hide tick labels
+// //     )
+// //     .call(g => g.select(".domain").remove()) // Removes black Y-axis line
+// //     .selectAll(".tick line")
+// //     .attr("stroke", "#ddd") // Light grey
+// //     .attr("stroke-width", 0.8);
+
+//     vis.updateVis();
+//   }
 
   updateVis() {
     let vis = this;
@@ -100,6 +182,23 @@ class BarChart {
 
   renderVis() {
     let vis = this;
+
+    // remove prev lines
+    vis.chart.selectAll(".grid").remove();
+
+     // ** Append Y-axis gridlines **
+     vis.gridGroup = vis.chart.append("g")
+     .attr("class", "grid")
+     .attr("transform", "translate(0,0)") // Remove any offset
+     .call(d3.axisLeft(vis.yScale)
+         .ticks(5) // Ensure it matches Y-axis ticks
+         .tickSize(-vis.width) // Extend across chart
+         .tickFormat("") // Hide labels
+     );
+
+    // Remove unwanted default Y-axis line
+    vis.gridGroup.select(".domain").remove();
+
 
     // Bind data to bars
     const bars = vis.chart
@@ -168,34 +267,7 @@ class BarChart {
     vis.yAxisGroup.call(vis.yAxis).select(".domain").remove();
 
     // Remove any previous gridlines before adding new ones
-    vis.chart.selectAll(".grid").remove();
     vis.chart.selectAll(".axis").remove();
-
-
-    // Add Y-axis gridlines (horizontal)
-    // vis.chart.append("g")
-    //     .attr("class", "grid")
-    //     .call(d3.axisLeft(vis.yScale)
-    //         .tickSize(-vis.width) // Extend lines across chart
-    //         .ticks(5)
-    //         .tickFormat("") // Hide tick labels
-    //     )
-    //     .selectAll(".tick line")
-    //     .attr("stroke", "#ddd") // Light grey
-    //     .attr("stroke-width", 0.8);
-
-    // Add Y-axis gridlines (horizontal)
-vis.chart.append("g")
-.attr("class", "grid")
-.call(d3.axisLeft(vis.yScale)
-    .tickSize(-vis.width) // Extend lines across the chart
-    .ticks(5)
-    .tickFormat("") // Hide tick labels
-)
-.call(g => g.select(".domain").remove()) // Removes black Y-axis line
-.selectAll(".tick line")
-.attr("stroke", "#ddd") // Light grey
-.attr("stroke-width", 0.8);
 
 
 

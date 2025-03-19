@@ -122,6 +122,28 @@ class ScatterPlot {
   renderVis() {
     let vis = this;
 
+    
+    // remove prev lines
+    vis.chart.selectAll(".grid").remove();
+
+    // ** Append Y-axis gridlines **
+    vis.gridGroup = vis.chart
+      .append("g")
+      .attr("class", "grid")
+      .attr("transform", "translate(0,0)") // Remove any offset
+      .call(
+        d3
+          .axisLeft(vis.yScale)
+        //   .ticks(5) // Ensure it matches Y-axis ticks
+          .tickSize(-vis.width) // Extend across chart
+          .tickFormat("") // Hide labels
+      );
+
+    vis.gridGroup.lower(); // **Send grid to the very back**
+
+    // Remove unwanted default Y-axis line
+    vis.gridGroup.select(".domain").remove();
+
     // Background rectangle to capture clicks outside of points
     vis.chart
       .selectAll(".background-rect")
@@ -201,5 +223,10 @@ class ScatterPlot {
     // Update axes
     vis.xAxisGroup.call(vis.xAxis);
     vis.yAxisGroup.call(vis.yAxis);
+
+     // Update axes (remove domain lines)
+     vis.xAxisGroup.call(vis.xAxis).select(".domain").remove();
+     vis.yAxisGroup.call(vis.yAxis).select(".domain").remove();
+ 
   }
 }

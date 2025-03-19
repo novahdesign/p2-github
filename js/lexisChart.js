@@ -162,9 +162,8 @@ class LexisChart {
                             }, ${d.start_year} - ${d.end_year}</i></div>
                             <div> • Age at Inaguration: ${d.start_age}</div>
                             <div> • Duration: ${d.duration} years</div>
-                            <div> • GDP per capita: ${
-                              d.pcgdp ? "$" + d.pcgdp : "N/A"
-                            }</div>
+                                                <div> • GDP per capita: ${ d.pcgdp ? "$" + Math.round(d.pcgdp) : "N/A" }</div>
+
                         `);
             })
             .on("mouseout", function () {

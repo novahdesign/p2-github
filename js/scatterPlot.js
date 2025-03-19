@@ -93,7 +93,6 @@ class ScatterPlot {
 
     // Update x-scale domain dynamically
     vis.xScale.domain([0, d3.max(vis.filteredData, (d) => d.pcgdp) || 1]);
-
     vis.renderVis();
   }
 
@@ -125,7 +124,7 @@ class ScatterPlot {
     // remove prev lines
     vis.chart.selectAll(".grid").remove();
 
-    // ** Append Y-axis gridlines **
+    // Append Y-axis gridlines
     vis.gridGroup = vis.chart
       .append("g")
       .attr("class", "grid")
@@ -138,7 +137,7 @@ class ScatterPlot {
           .tickFormat("") // Hide labels
       );
 
-    vis.gridGroup.lower(); // **Send grid to the very back**
+    vis.gridGroup.lower();
 
     // Remove unwanted default Y-axis line
     vis.gridGroup.select(".domain").remove();
@@ -146,7 +145,7 @@ class ScatterPlot {
     vis.gridGroupX = vis.chart
       .append("g")
       .attr("class", "grid grid-x")
-      .attr("transform", `translate(0, ${vis.height})`) // ✅ Aligns with X-axis
+      .attr("transform", `translate(0, ${vis.height})`)
       .call(
         d3
           .axisBottom(vis.xScale)
@@ -179,7 +178,7 @@ class ScatterPlot {
       .on("click", function () {
         vis.selectedPoints.clear(); // Clear all selections
         vis.updateVis(); // Update scatter plot
-        lexisChart.updateVis();
+        lexisChart.updateVis(); // Update LexisChart
       });
 
     // Bind data to points
@@ -204,7 +203,7 @@ class ScatterPlot {
       .on("mouseover", function (event, d) {
         d3.select(this).attr("stroke", "black").attr("stroke-width", 2);
 
-        // **D3 Tooltip**
+        // Tooltip
         d3
           .select("#tooltip")
           .style("display", "block")
@@ -216,9 +215,8 @@ class ScatterPlot {
                     }, ${d.start_year} - ${d.end_year}</i></div>
                     <div> • Age at Inaguration: ${d.start_age}</div>
                     <div> • Duration: ${d.duration} years</div>
-                    <div> • GDP per capita: ${
-                      d.pcgdp ? "$" + d.pcgdp : "N/A"
-                    }</div>
+                    <div> • GDP per capita: ${ d.pcgdp ? "$" + Math.round(d.pcgdp) : "N/A" }</div>
+
                 `);
       })
 

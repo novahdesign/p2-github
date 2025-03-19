@@ -196,6 +196,8 @@ class BarChart {
          .tickFormat("") // Hide labels
      );
 
+    vis.gridGroup.lower(); // **Send grid to the very back**
+
     // Remove unwanted default Y-axis line
     vis.gridGroup.select(".domain").remove();
 

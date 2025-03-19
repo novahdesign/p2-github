@@ -113,18 +113,20 @@ class BarChart {
           .style("cursor", "pointer")
 
           // Hover effect: outline bar
+          // added tooltip counting number of politicians
           .on("mouseover", function (event, d) {
               d3.select(this)
                   .attr("stroke", "black")
                   .attr("stroke-width", 2);
 
-              vis.tooltip
-                  .html(`
-                      <strong>${d.gender}</strong>: ${d.count} politicians
-                  `)
-                  .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
-                  .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
-                  .style("opacity", 1);
+                  d3.select("#tooltip")
+                        .style("display", "block")
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY + 10) + "px")
+                        .html(`
+                          <strong>${d.gender}</strong>: ${d.count} politicians
+
+                        `);
           })
           .on("mouseout", function () {
               d3.select(this).attr("stroke", "none");
@@ -159,42 +161,3 @@ class BarChart {
       vis.yAxisGroup.call(vis.yAxis);
   }
 }
-
-// class BarChart {
-
-//   /**
-//    * Class constructor with initial configuration
-//    * @param {Object}
-//    */
-//   // Todo: Add or remove parameters from the constructor as needed
-//   constructor(_config, data) {
-//     this.config = {
-//       parentElement: _config.parentElement,
-//       containerWidth: 240,
-//       containerHeight: 260,
-//       margin: {
-//         top: 30,
-//         right: 5,
-//         bottom: 20,
-//         left: 30
-//       }
-//       // Todo: Add or remove attributes from config as needed
-//     }
-//     this.initVis();
-//   }
-
-//   initVis() {
-//     let vis = this;
-//     // Todo: Create SVG area, initialize scales and axes
-//   }
-
-//   updateVis() {
-//     let vis = this;
-//     // Todo: Prepare data and scales
-//   }
-
-//   renderVis() {
-//     let vis = this;
-//     // Todo: Bind data to visual elements, update axes
-//   }
-// }

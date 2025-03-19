@@ -15,15 +15,45 @@
 #tooltip {
     position: absolute;
     display: none;
-    background:lightgrey;
+    background:white;
     color: black;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 2px;
     font-size: 12px;
     pointer-events: none;
-}
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ddd;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+} 
 .tooltip-title {
     font-weight: bold;
     font-size: 14px;
     margin-bottom: 5px;
 }
+
+
+/* #tooltip {
+    position: absolute;
+    display: none;
+    background-color: white;
+    color: black;
+    padding: 8px 12px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ddd;
+    pointer-events: none; /* Ensures tooltip doesn't interfere with hover */
+    /* z-index: 1000;
+  } */ 
+  
+  #tooltip div {
+    margin-bottom: 4px;
+  }
+  
+  #tooltip i {
+    color: #555; /* Slightly faded italic text */
+  }
+  

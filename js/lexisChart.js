@@ -189,17 +189,29 @@ class LexisChart {
                         .attr("stroke-width", 4)
                         .attr("marker-end", "url(#arrow-head-hovered)");
 
-                    vis.tooltip.html(`
-                        <strong>${d.leader}</strong><br>
-                        Country: ${d.country} <br>
-                        Years: ${d.start_year} - ${d.end_year} <br>
-                        Age: ${d.start_age} - ${d.end_age} <br>
-                        Duration: ${d.duration} years <br>
-                        GDP per capita: ${d.pcgdp ? "$" + d.pcgdp : "N/A"}
-                    `)
-                    .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
-                    .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
-                    .style("opacity", 1);
+                        d3.select("#tooltip")
+                        .style("display", "block")
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY + 10) + "px")
+                        .html(`
+                            <div><strong>${d.leader}</strong></div>
+                            <div><i>${d.country}, ${d.start_year} - ${d.end_year}</i></div>
+                            <div> • Age at Inaguration: ${d.start_age}</div>
+                            <div> • Duration: ${d.duration} years</div>
+                            <div> • GDP per capita: ${d.pcgdp ? "$" + d.pcgdp : "N/A"}</div>
+                        `);
+
+                    // vis.tooltip.html(`
+                    //     <strong>${d.leader}</strong><br>
+                    //     Country: ${d.country} <br>
+                    //     Years: ${d.start_year} - ${d.end_year} <br>
+                    //     Age: ${d.start_age} - ${d.end_age} <br>
+                    //     Duration: ${d.duration} years <br>
+                    //     GDP per capita: ${d.pcgdp ? "$" + d.pcgdp : "N/A"}
+                    // `)
+                    // .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
+                    // .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
+                    // .style("opacity", 1);
                 })
                 .on("mouseout", function () {
                     d3.select(this)

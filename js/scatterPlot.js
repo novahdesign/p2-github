@@ -128,25 +128,11 @@ class ScatterPlot {
           .attr("cx", d => vis.xScale(d.pcgdp))
           .attr("cy", d => vis.yScale(d.start_age))
           .attr("r", 5)
-          .attr("fill", d => vis.selectedPoints.has(d.leader) ? "blue" : "#ccc")
+
+          .attr("fill", d => vis.selectedPoints.has(d.leader) ? "#e89f03" : "#ccc")
+         
           .style("cursor", "pointer")
           .style("fill-opacity", d => vis.selectedPoints.has(d.leader) ? 0.95 : 0.7)
-
-          // Hover: Outline and darken
-        //   .on("mouseover", function (event, d) {
-        //       d3.select(this)
-        //           .attr("stroke", "black")
-        //           .attr("stroke-width", 2);
-
-        //       vis.tooltip.html(`
-        //           <strong>${d.leader}</strong><br>
-        //           Country: ${d.country} <br>
-        //           GDP per capita: $${d.pcgdp}
-        //       `)
-        //           .style("left", (event.pageX + vis.config.tooltipPadding) + "px")
-        //           .style("top", (event.pageY - vis.config.tooltipPadding) + "px")
-        //           .style("opacity", 1);
-        //   })
 
         // Hover: Outline and darken
         .on("mouseover", function (event, d) {
@@ -162,7 +148,7 @@ class ScatterPlot {
                 .html(`
                     <div><strong>${d.leader}</strong></div>
                     <div><i>${d.country}, ${d.start_year} - ${d.end_year}</i></div>
-                    <div> • Age: ${d.start_age} - ${d.end_age}</div>
+                    <div> • Age at Inaguration: ${d.start_age}</div>
                     <div> • Duration: ${d.duration} years</div>
                     <div> • GDP per capita: ${d.pcgdp ? "$" + d.pcgdp : "N/A"}</div>
                 `);
@@ -184,17 +170,10 @@ class ScatterPlot {
             } else {
                 selectedPoints.add(d.leader); // Select point
             }
-        
-            updateSelections(); // Update Lexis and Scatter Plot
+
+      updateSelections(); // Update Lexis and Scatter Plot
         });
 
-        
-
-              //   // Click to select/deselect
-              //   .on("click", function (event, d) {
-              //     event.stopPropagation(); // Prevent background click from firing
-              //     toggleSelection(d.leader);
-              // });
 
       // update opacity
       vis.updateOpacity();
@@ -204,43 +183,3 @@ class ScatterPlot {
       vis.yAxisGroup.call(vis.yAxis);
   }
 }
-
-// class ScatterPlot {
-
-//   /**
-//    * Class constructor with basic chart configuration
-//    * @param {Object}
-//    */
-//   // Todo: Add or remove parameters from the constructor as needed
-//   constructor(_config, data) {
-//     this.config = {
-//       parentElement: _config.parentElement,
-//       containerWidth: 720,
-//       containerHeight: 260,
-//       margin: {
-//         top: 30,
-//         right: 15,
-//         bottom: 20,
-//         left: 30
-//       }
-//       // Todo: Add or remove attributes from config as needed
-//     }
-//     this.initVis();
-//   }
-
-//   initVis() {
-//     let vis = this;
-//     // Todo: Create SVG area, chart, initialize scales and axes, add titles, etc
-//   }
-
-//   updateVis() {
-//     let vis = this;
-//     // Todo: Prepare data and scales
-//   }
-
-//   renderVis() {
-//     let vis = this;
-//     // Todo: Bind data to visual elements, update axes
-//   }
-
-// }

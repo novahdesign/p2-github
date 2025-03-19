@@ -122,7 +122,6 @@ class ScatterPlot {
   renderVis() {
     let vis = this;
 
-    
     // remove prev lines
     vis.chart.selectAll(".grid").remove();
 
@@ -134,11 +133,10 @@ class ScatterPlot {
       .call(
         d3
           .axisLeft(vis.yScale)
-        //   .ticks(5) // Ensure it matches Y-axis ticks
+          //   .ticks(5) // Ensure it matches Y-axis ticks
           .tickSize(-vis.width) // Extend across chart
           .tickFormat("") // Hide labels
-      )
-      
+      );
 
     vis.gridGroup.lower(); // **Send grid to the very back**
 
@@ -146,27 +144,27 @@ class ScatterPlot {
     vis.gridGroup.select(".domain").remove();
 
     vis.gridGroupX = vis.chart
-  .append("g")
-  .attr("class", "grid grid-x")
-  .attr("transform", `translate(0, ${vis.height})`) // ✅ Aligns with X-axis
-  .call(
-    d3.axisBottom(vis.xScale)
-      .tickSize(-vis.height) // Extend lines across the chart
-      .tickFormat("") // Hide tick labels
-  );
+      .append("g")
+      .attr("class", "grid grid-x")
+      .attr("transform", `translate(0, ${vis.height})`) // ✅ Aligns with X-axis
+      .call(
+        d3
+          .axisBottom(vis.xScale)
+          .tickSize(-vis.height) // Extend lines across the chart
+          .tickFormat("") // Hide tick labels
+      );
 
-// Send grid lines to the back
-vis.gridGroupX.lower();
+    // Send grid lines to the back
+    vis.gridGroupX.lower();
 
-// Remove unwanted default x-axis line
-vis.gridGroupX.select(".domain").remove();
+    // Remove unwanted default x-axis line
+    vis.gridGroupX.select(".domain").remove();
 
-// Style grid lines 
-vis.gridGroupX.selectAll(".tick line")
-  .attr("stroke", "#ddd") // Light grey
-  .attr("stroke-width", 0.8);
-
-
+    // Style grid lines
+    vis.gridGroupX
+      .selectAll(".tick line")
+      .attr("stroke", "#ddd") // Light grey
+      .attr("stroke-width", 0.8);
 
     // Background rectangle to capture clicks outside of points
     vis.chart
@@ -243,18 +241,15 @@ vis.gridGroupX.selectAll(".tick line")
 
         updateSelections(); // Update Lexis and Scatter Plot
         // d3.select(this).classed('active', !isActive); // Add class to style active filters with CSS
-  
-    
-    });
+      });
     // update opacity
     vis.updateOpacity();
     // Update axes
     vis.xAxisGroup.call(vis.xAxis);
     vis.yAxisGroup.call(vis.yAxis);
 
-     // Update axes (remove domain lines)
-     vis.xAxisGroup.call(vis.xAxis).select(".domain").remove();
-     vis.yAxisGroup.call(vis.yAxis).select(".domain").remove();
- 
+    // Update axes (remove domain lines)
+    vis.xAxisGroup.call(vis.xAxis).select(".domain").remove();
+    vis.yAxisGroup.call(vis.yAxis).select(".domain").remove();
   }
 }

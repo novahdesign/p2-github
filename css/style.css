@@ -66,7 +66,6 @@
     stroke: none;
 }
 
-
 .bar.active {
   stroke: #333;
 }
@@ -97,3 +96,14 @@
     font-family: CALIBRI, sans-serif;
   }
   
+/* Hide tick marks ONLY for Scatterplot */
+#scatter-plot .x-axis .tick line,
+#scatter-plot .y-axis .tick line {
+  display: none;
+}
+
+/* Hide tick marks ONLY for BarChart */
+#bar-chart .x-axis .tick line,
+#bar-chart .y-axis .tick line {
+  display: none;
+}

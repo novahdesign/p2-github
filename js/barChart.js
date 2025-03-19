@@ -99,6 +99,7 @@ class BarChart {
 
   renderVis() {
       let vis = this;
+      
 
       // Bind data to bars
       const bars = vis.chart.selectAll(".bar")
@@ -159,5 +160,8 @@ class BarChart {
       // Update axes
       vis.xAxisGroup.call(vis.xAxis);
       vis.yAxisGroup.call(vis.yAxis);
+
+
+
   }
 }

@@ -219,8 +219,8 @@ class LexisChart {
                         .attr("stroke-width", d => vis.getArrowWidth(d))
                         .attr("marker-end", d => vis.getArrowMarker(d));
 
-                    vis.tooltip.style("opacity", 0);
-                })
+                        d3.select("#tooltip").style("display", "none");
+                      })
                 .on("click", function (event, d) {
                     vis.toggleSelection(d.leader);
                     vis.renderVis(); // Re-render to update styles

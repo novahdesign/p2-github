@@ -130,8 +130,8 @@ class BarChart {
           })
           .on("mouseout", function () {
               d3.select(this).attr("stroke", "none");
-              vis.tooltip.style("opacity", 0);
-          })
+              d3.select("#tooltip").style("display", "none");
+            })
 
           
         // Click to filter by gender

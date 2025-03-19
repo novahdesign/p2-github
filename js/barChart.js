@@ -56,15 +56,6 @@ class BarChart {
 
     vis.yAxisGroup = vis.chart.append("g").attr("class", "y-axis");
 
-    // Add gridlines
-    vis.yAxisGroup
-      .append("g")
-      .attr("class", "grid")
-      .call(d3.axisLeft(vis.yScale).tickSize(-vis.width).tickFormat(""));
-
-    // Remove vertical gridlines
-    vis.xAxisGroup.selectAll(".domain, .tick line").remove();
-
     // Axis labels
     vis.chart
       .append("text")
@@ -103,6 +94,7 @@ class BarChart {
     vis.xScale.domain(vis.filteredData.map((d) => d.gender));
     vis.yScale.domain([0, d3.max(vis.filteredData, (d) => d.count) || 1]);
 
+   
     vis.renderVis();
   }
 
@@ -169,5 +161,43 @@ class BarChart {
     // Update axes
     vis.xAxisGroup.call(vis.xAxis);
     vis.yAxisGroup.call(vis.yAxis);
+
+
+    // Update axes (remove domain lines)
+    vis.xAxisGroup.call(vis.xAxis).select(".domain").remove();
+    vis.yAxisGroup.call(vis.yAxis).select(".domain").remove();
+
+    // Remove any previous gridlines before adding new ones
+    vis.chart.selectAll(".grid").remove();
+    vis.chart.selectAll(".axis").remove();
+
+
+    // Add Y-axis gridlines (horizontal)
+    // vis.chart.append("g")
+    //     .attr("class", "grid")
+    //     .call(d3.axisLeft(vis.yScale)
+    //         .tickSize(-vis.width) // Extend lines across chart
+    //         .ticks(5)
+    //         .tickFormat("") // Hide tick labels
+    //     )
+    //     .selectAll(".tick line")
+    //     .attr("stroke", "#ddd") // Light grey
+    //     .attr("stroke-width", 0.8);
+
+    // Add Y-axis gridlines (horizontal)
+vis.chart.append("g")
+.attr("class", "grid")
+.call(d3.axisLeft(vis.yScale)
+    .tickSize(-vis.width) // Extend lines across the chart
+    .ticks(5)
+    .tickFormat("") // Hide tick labels
+)
+.call(g => g.select(".domain").remove()) // Removes black Y-axis line
+.selectAll(".tick line")
+.attr("stroke", "#ddd") // Light grey
+.attr("stroke-width", 0.8);
+
+
+
   }
 }

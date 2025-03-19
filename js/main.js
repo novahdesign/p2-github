@@ -38,21 +38,15 @@ d3.csv("data/leaderlist.csv").then((_data) => {
 
   data.sort((a, b) => a.label - b.label);
 
-  // init lexisChart
-  // init barChart
-  // init scatterPlot <3
-
+  // init lexisChart, barChart, and scatterPlot
   lexisChart = new LexisChart({ parentElement: "#lexis-chart" }, data);
   barChart = new BarChart({ parentElement: "#bar-chart" }, data);
   scatterPlot = new ScatterPlot({ parentElement: "#scatter-plot" }, data);
 
   // Add event listener for the dropdown filter
   d3.select("#country-selector").on("change", function () {
-    // selectedPoints.clear(); // clear selected points in lexis chart arrows and scatter plot
     resetSelections(); // Clear selected gender, arrows, and points
-
-    selectedGroup = this.value;
-
+    selectedGroup = this.value; // set Selected Group to user input
     filterData(); // Apply filter
   });
 
@@ -73,7 +67,6 @@ function resetSelections() {
   updateSelections();
   barChart.updateVis();
 }
-
 
 function filterData() {
   // Apply Global Filter: Country Selection & Duration > 0

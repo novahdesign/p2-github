@@ -4,7 +4,7 @@ class LexisChart {
       parentElement: _config.parentElement,
       containerWidth: 1000,
       containerHeight: 380,
-      margin: { top: 15, right: 15, bottom: 20, left: 25 },
+      margin: { top: 15, right: 10, bottom: 20, left: 23 },
       tooltipPadding: 15,
     };
 
@@ -95,7 +95,7 @@ class LexisChart {
       .append("clipPath")
       .attr("id", "chart-mask")
       .append("rect")
-      .attr("width", vis.width) // Clipping width
+      .attr("width", vis.width + 2) // Clipping width
       .attr("height", vis.height); // Clipping height
 
     // Apply the mask to the group containing arrows
